@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { parseCookies, setCookie } from 'nookies';
+import { signOut } from '../contexts/AuthContext';
 
 let cookies = parseCookies();
 // global variable to control the refresh mechanism
@@ -56,7 +57,7 @@ api.interceptors.response.use(response => response, (error: AxiosError<any>) => 
                 .catch((error) => {
                     // (4.2) if the refresh token process succeeded, execute the success function of all awaiting requests
                     failedRequests.forEach(awaitingRequest => {
-                        awaitingRequest.onSuccess(error);
+                        awaitingRequest.onFailure(error);
                     })
                 })
                 .finally(() => {
@@ -88,7 +89,9 @@ api.interceptors.response.use(response => response, (error: AxiosError<any>) => 
                 })
             })
         } else {
-
+            signOut();
         }
+
+        return Promise.reject(error);
     }
 })

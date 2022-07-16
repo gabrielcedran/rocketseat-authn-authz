@@ -5,7 +5,6 @@ export function withSSRGuest<P>(fn: GetServerSideProps<P>) {
 
     return async (ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult<P>> => {
 
-        console.log(ctx.req.cookies);
 
         // when nookies is being used on the server side, it is necessary to provide the context
         const cookies = parseCookies(ctx);

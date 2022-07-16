@@ -1,3 +1,5 @@
+import { GetServerSideProps } from 'next'
+import { parseCookies } from 'nookies'
 import { FormEvent, useState } from 'react'
 import { useAuthContext } from '../contexts/AuthContext'
 import styles from '../styles/Home.module.css'
@@ -24,4 +26,26 @@ export default function Home() {
       <button type="submit">Login</button>
     </form>
   )
+}
+
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+
+  console.log(ctx.req.cookies);
+
+  // when nookies is being used on the server side, it is necessary to provide the context
+  const cookies = parseCookies(ctx);
+
+  if (cookies['nextAuthApp.token']) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
 }

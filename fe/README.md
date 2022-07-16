@@ -12,5 +12,5 @@ NextJS does not work (or does not work seamlessly) with sessionStorage and local
 
 The best option to persistent store data is.... cookies :).
 
-Suggested library: nookies (Next cOOKIES :P). It provides good integration with NextJS.
+Suggested library: nookies ("N"ext c"OOKIES" :P). It provides good integration with NextJS.
 

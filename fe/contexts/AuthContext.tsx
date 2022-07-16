@@ -16,7 +16,7 @@ type SignInCredentials = {
 
 type AuthContextData = {
     signIn: (credentials: SignInCredentials) => Promise<void>;
-    signOut: () => void;
+    signOut: (broadcast?: boolean) => void;
     user: User;
     isAuthenticated: boolean;
 }
@@ -38,6 +38,10 @@ export const AuthContextProvider = ({children}: AuthContextProviderProps) => {
         authChannel.onmessage = (message) => {
             if (message.data === 'signOut') {
                 signOut();
+            }
+            if (message.data === 'signIn') {
+                console.log("pushing");
+                Router.push('/dashboard')
             }
         }
     }, [])
@@ -89,6 +93,8 @@ export const AuthContextProvider = ({children}: AuthContextProviderProps) => {
              it will cause all the sequential requests to fail. When login is performed, it is necessary
              to update it */ 
             api.defaults.headers['Authorization'] = `Bearer ${token}`
+
+            authChannel.postMessage('signIn');
 
             Router.push('/dashboard')
         } catch (err) {
